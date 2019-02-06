@@ -36,6 +36,7 @@ type CharmDir struct {
 	lxdProfile *LXDProfile
 	revision   int
 	ignoreDirs []string
+	version    string
 }
 
 // Trick to ensure *CharmDir implements the Charm interface.
@@ -120,6 +121,14 @@ func ReadCharmDir(path string) (dir *CharmDir, err error) {
 		}
 	}
 
+	if file, err = os.Open(dir.join("version")); err == nil {
+		dir.version, err = ReadVersion(file)
+		file.Close()
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return dir, nil
 }
 
@@ -128,6 +137,11 @@ func ReadCharmDir(path string) (dir *CharmDir, err error) {
 func (dir *CharmDir) join(parts ...string) string {
 	parts = append([]string{dir.Path}, parts...)
 	return filepath.Join(parts...)
+}
+
+// Version returns the VCS version for the charm expanded in dir.
+func (dir *CharmDir) Version() string {
+	return dir.version
 }
 
 // Revision returns the revision number for the charm

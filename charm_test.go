@@ -35,10 +35,21 @@ func (s *CharmSuite) TestReadCharm(c *gc.C) {
 	c.Assert(err, gc.IsNil)
 	c.Assert(ch.Meta().Name, gc.Equals, "dummy")
 
+	ch, err = charm.ReadCharm(charmDirPath(c, "versioned"))
+	c.Assert(err, gc.IsNil)
+	c.Assert(ch.Meta().Name, gc.Equals, "versioned")
+	c.Assert(ch.Version(), gc.Equals, "929903d")
+
 	bPath := archivePath(c, readCharmDir(c, "dummy"))
 	ch, err = charm.ReadCharm(bPath)
 	c.Assert(err, gc.IsNil)
 	c.Assert(ch.Meta().Name, gc.Equals, "dummy")
+
+	bPath = archivePath(c, readCharmDir(c, "versioned"))
+	ch, err = charm.ReadCharm(bPath)
+	c.Assert(err, gc.IsNil)
+	c.Assert(ch.Meta().Name, gc.Equals, "versioned")
+	c.Assert(ch.Version(), gc.Equals, "929903d")
 }
 
 func (s *CharmSuite) TestReadCharmDirError(c *gc.C) {

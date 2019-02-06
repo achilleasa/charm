@@ -1511,6 +1511,10 @@ func (c *dummyCharm) LXDProfile() *charm.LXDProfile {
 	panic("unused")
 }
 
+func (c *dummyCharm) Version() string {
+	panic("unused")
+}
+
 func (c *dummyCharm) Revision() int {
 	panic("unused")
 }
